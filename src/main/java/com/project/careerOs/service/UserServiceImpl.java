@@ -5,17 +5,21 @@ import com.project.careerOs.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.project.careerOs.dto.LoginRequest;
 import com.project.careerOs.dto.SignUpRequest;
 import com.project.careerOs.repository.UserRepo;
+import com.project.careerOs.security.JwtUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder, JwtUtil jwtUtil){
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -30,6 +34,22 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
         userRepo.save(user);
+
+    }
+
+    @Override
+    public String login(LoginRequest loginRequest){
+        String email = loginRequest.getEmail();
+        User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
+
+        boolean passwordMatches = passwordEncoder.matches(user.getPassword(),loginRequest.getPassword());
+
+        if(passwordMatches){
+            return jwtUtil.generateToken(email);
+        }
+        else{
+            throw new RuntimeException("Password mismatch");
+        }
 
     }
 }
