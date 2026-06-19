@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.careerOs.dto.LoginRequest;
 import com.project.careerOs.dto.SignUpRequest;
-import com.project.careerOs.model.User;
-import com.project.careerOs.repository.UserRepo;
 import com.project.careerOs.service.UserService;
 
 @RestController

@@ -68,6 +68,12 @@
         <artifactId>jjwt-api</artifactId>
         <version>0.12.6</version>
     </dependency>
+	<dependency>
+    	<groupId>com.mysql</groupId>
+    	<artifactId>mysql-connector-j</artifactId>
+    	<scope>runtime</scope>
+	</dependency>
+
     <!-- JJWT Impl (Runtime) -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
