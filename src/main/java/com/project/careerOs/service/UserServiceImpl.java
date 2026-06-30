@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         String email = loginRequest.getEmail();
         User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
 
-        boolean passwordMatches = passwordEncoder.matches(user.getPassword(),loginRequest.getPassword());
+        boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(),user.getPassword());
 
         if(passwordMatches){
             return jwtUtil.generateToken(email);

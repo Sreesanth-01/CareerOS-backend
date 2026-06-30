@@ -1,7 +1,6 @@
 package com.project.careerOs.config;
 
 
-import java.io.ObjectInputFilter.Config;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
