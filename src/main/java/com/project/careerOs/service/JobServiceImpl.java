@@ -22,7 +22,18 @@ public class JobServiceImpl implements JobService {
     public JobApplication addJobApplication(JobApplicationRequest jobApplicationRequest, String email){
         User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
 
+        JobApplication jobApplication = new JobApplication();
 
+        jobApplication.setCompanyName(jobApplicationRequest.getCompanyName());
+        jobApplication.setPosition(jobApplicationRequest.getPosition());
+        jobApplication.setSalary(jobApplicationRequest.getSalary());
+        jobApplication.setStatus(jobApplicationRequest.getStatus());
+        jobApplication.setAppliedDate(jobApplicationRequest.getAppliedDate());
+        jobApplication.setNotes(jobApplicationRequest.getNotes());
+
+        jobApplication.setUser(user);
+
+        return jobRepo.save(jobApplication);
 
     }
 
