@@ -1,8 +1,10 @@
 package com.project.careerOs.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class LoginRequest {
     public String email;
     public String password;
