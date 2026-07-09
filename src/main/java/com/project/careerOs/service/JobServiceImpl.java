@@ -3,6 +3,7 @@ package com.project.careerOs.service;
 import org.springframework.stereotype.Service;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
+import com.project.careerOs.dto.res.JobApplicationResponse;
 import com.project.careerOs.model.JobApplication;
 import com.project.careerOs.model.User;
 import com.project.careerOs.repository.JobRepo;
@@ -19,7 +20,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobApplication addJobApplication(JobApplicationRequest jobApplicationRequest, String email){
+    public JobApplicationResponse addJobApplication(JobApplicationRequest jobApplicationRequest, String email){
         User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
 
         JobApplication jobApplication = new JobApplication();
@@ -33,7 +34,11 @@ public class JobServiceImpl implements JobService {
 
         jobApplication.setUser(user);
 
-        return jobRepo.save(jobApplication);
+        jobRepo.save(jobApplication);
+
+        return JobApplicationResponse.builder()
+            .message("Job application added successfully")
+            .build();
 
     }
 

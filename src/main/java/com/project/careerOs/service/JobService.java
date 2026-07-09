@@ -1,8 +1,8 @@
 package com.project.careerOs.service;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
-import com.project.careerOs.model.JobApplication;
+import com.project.careerOs.dto.res.JobApplicationResponse;
 
 public interface JobService {
-    public JobApplication addJobApplication(JobApplicationRequest jobApplicationRequest, String email);
+    public JobApplicationResponse addJobApplication(JobApplicationRequest jobApplicationRequest, String email);
 }
