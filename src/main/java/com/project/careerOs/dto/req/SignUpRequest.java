@@ -1,6 +1,5 @@
-package com.project.careerOs.dto;
+package com.project.careerOs.dto.req;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

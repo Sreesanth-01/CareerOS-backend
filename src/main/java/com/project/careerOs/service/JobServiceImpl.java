@@ -2,7 +2,7 @@ package com.project.careerOs.service;
 
 import org.springframework.stereotype.Service;
 
-import com.project.careerOs.dto.JobApplicationRequest;
+import com.project.careerOs.dto.req.JobApplicationRequest;
 import com.project.careerOs.model.JobApplication;
 import com.project.careerOs.model.User;
 import com.project.careerOs.repository.JobRepo;
@@ -25,7 +25,7 @@ public class JobServiceImpl implements JobService {
         JobApplication jobApplication = new JobApplication();
 
         jobApplication.setCompanyName(jobApplicationRequest.getCompanyName());
-        jobApplication.setPosition(jobApplicationRequest.getPosition());
+        jobApplication.setJobRole(jobApplicationRequest.getJobRole());
         jobApplication.setSalary(jobApplicationRequest.getSalary());
         jobApplication.setStatus(jobApplicationRequest.getStatus());
         jobApplication.setAppliedDate(jobApplicationRequest.getAppliedDate());

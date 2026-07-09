@@ -5,10 +5,12 @@ import com.project.careerOs.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.careerOs.dto.LoginRequest;
-import com.project.careerOs.dto.SignUpRequest;
+import com.project.careerOs.dto.req.LoginRequest;
+import com.project.careerOs.dto.req.SignUpRequest;
+import com.project.careerOs.dto.res.LoginResponse;
 import com.project.careerOs.repository.UserRepo;
 import com.project.careerOs.security.JwtUtil;
+// also implement forgot password, reset- password, logout 
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,14 +40,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(LoginRequest loginRequest){
+    public LoginResponse login(LoginRequest loginRequest){
         String email = loginRequest.getEmail();
         User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
 
         boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(),user.getPassword());
 
         if(passwordMatches){
-            return jwtUtil.generateToken(email);
+            String token = jwtUtil.generateToken(email);
+            return LoginResponse.builder()
+            .token(token)
+            .message("Logged in successfully")
+            .build();
         }
         else{
             throw new RuntimeException("Password mismatch");

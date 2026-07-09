@@ -1,4 +1,4 @@
-package com.project.careerOs.dto;
+package com.project.careerOs.dto.req;
 
 import java.time.LocalDate;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class JobApplicationRequest {
     public String companyName;
-    public String position;
+    public String jobRole;
     public long salary;
     public Status status;
     public LocalDate appliedDate;
