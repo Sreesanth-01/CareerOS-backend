@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.careerOs.dto.req.LoginRequest;
 import com.project.careerOs.dto.req.SignUpRequest;
 import com.project.careerOs.dto.res.LoginResponse;
+import com.project.careerOs.dto.res.SignUpResponse;
 import com.project.careerOs.service.UserService;
 
 @RestController
@@ -25,10 +26,15 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<String> signUp(@RequestBody SignUpRequest signUpRequest){
-        userService.register(signUpRequest);
+    public ResponseEntity<Object> signUp(@RequestBody SignUpRequest signUpRequest){
+        try{
+            SignUpResponse response = userService.register(signUpRequest);
+            return ResponseEntity.ok(response.getMessage());
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
 
-        return ResponseEntity.ok("SignUp successfull");
     }
 
     @PostMapping("/login")
