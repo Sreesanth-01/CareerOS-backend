@@ -3,6 +3,7 @@ package com.project.careerOs.security;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -13,14 +14,18 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private final long expiration_time =  1000*60*60;
+    private final long expiration_time =  3600000*24;
     
-    public String generateToken(String email){
+    private String buildToken(String email){
         return Jwts.builder()
                     .setSubject(email)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis()+expiration_time))
                     .signWith(key)
                     .compact();
+    }
+
+    public String generateToken(UserDetails userDetails){
+        return buildToken(userDetails.getUsername());
     }
 }
