@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,5 +28,28 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails){
         return buildToken(userDetails.getUsername());
+    }
+
+    public String extractEmail(String token){
+        return Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+    }
+
+    public boolean validateToken(String token){
+        try{
+            Jwts.parser()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
     }
 }
