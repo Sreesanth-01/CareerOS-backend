@@ -1,5 +1,7 @@
 package com.project.careerOs.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
@@ -41,6 +43,18 @@ public class JobServiceImpl implements JobService {
             .message("Job application added successfully")
             .build();
 
+    }
+
+    @Override
+    public List<JobApplication> getAllJobApplications(String email){
+        User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
+
+        List<JobApplication> list = jobRepo.findByUser(user);
+        if(list==null){
+            throw new RuntimeException("No content");
+        }
+        return list;
+        
     }
 
 }
