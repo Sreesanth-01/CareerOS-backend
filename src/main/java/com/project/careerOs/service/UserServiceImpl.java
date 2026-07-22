@@ -51,7 +51,8 @@ public class UserServiceImpl implements UserService {
         boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(),user.getPassword());
 
         if(passwordMatches){
-            String token = jwtUtil.generateToken(email);
+            String token = jwtUtil.generateToken(user);
+            System.out.println("Token: "+token);
             return LoginResponse.builder()
             .token(token)
             .message("Logged in successfully")

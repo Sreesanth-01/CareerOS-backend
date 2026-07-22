@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
 import com.project.careerOs.dto.res.JobApplicationResponse;
-import com.project.careerOs.model.User;
 import com.project.careerOs.service.JobServiceImpl;
 
 @RestController
@@ -21,14 +20,16 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @PostMapping()
-    public ResponseEntity<Object> addJobApplication(JobApplicationRequest jobApplicationRequest,@AuthenticationPrincipal User user){
+    @PostMapping
+    public ResponseEntity<Object> addJobApplication(JobApplicationRequest jobApplicationRequest,@AuthenticationPrincipal String email){
         try{
-            JobApplicationResponse response = jobService.addJobApplication(jobApplicationRequest, user.getEmail());
+            JobApplicationResponse response = jobService.addJobApplication(jobApplicationRequest, email);
             return new ResponseEntity<>(response.getMessage(), HttpStatus.CREATED);
         }
         catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 }
+
