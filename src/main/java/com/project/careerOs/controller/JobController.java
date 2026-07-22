@@ -38,7 +38,7 @@ public class JobController {
     @GetMapping
     public ResponseEntity<Object> getAllJobApplications(@AuthenticationPrincipal String email){
         try{
-            List<JobApplication> list = null;
+            List<JobApplication> list = jobService.getAllJobApplications(email);
             return new ResponseEntity<>(list,HttpStatus.OK);
         }
         catch(Exception e){
