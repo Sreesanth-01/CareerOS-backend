@@ -3,7 +3,6 @@ package com.project.careerOs.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
 import com.project.careerOs.dto.res.JobApplicationResponse;
@@ -23,7 +22,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobApplicationResponse addJobApplication(@RequestBody JobApplicationRequest jobApplicationRequest, String email){
+    public JobApplicationResponse addJobApplication(JobApplicationRequest jobApplicationRequest, String email){
         System.out.println("Email: "+email);
         User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
 
