@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.careerOs.dto.req.JobApplicationRequest;
 import com.project.careerOs.dto.res.JobApplicationResponse;
 import com.project.careerOs.model.JobApplication;
+import com.project.careerOs.model.Status;
 import com.project.careerOs.model.User;
 import com.project.careerOs.repository.JobRepo;
 import com.project.careerOs.repository.UserRepo;
