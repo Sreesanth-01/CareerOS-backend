@@ -9,4 +9,5 @@ import com.project.careerOs.model.JobApplication;
 public interface JobService {
     public JobApplicationResponse addJobApplication(JobApplicationRequest jobApplicationRequest, String email);
     public List<JobApplication> getAllJobApplications(String email);
+    public void deleteApplication(String email,long id);
 }

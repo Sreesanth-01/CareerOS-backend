@@ -12,5 +12,7 @@ import com.project.careerOs.model.User;
 public interface JobRepo extends JpaRepository<JobApplication,Long> {
 
     List<JobApplication> findByUser(User user);
+
+    JobApplication findByIdAndUser(long id, User user);
     
 }

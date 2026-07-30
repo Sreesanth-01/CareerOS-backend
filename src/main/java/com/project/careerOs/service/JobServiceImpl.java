@@ -25,7 +25,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobApplicationResponse addJobApplication(JobApplicationRequest jobApplicationRequest, String email){
         System.out.println("Email: "+email);
-        User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
+        User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found. Unable to add"));
 
         JobApplication jobApplication = new JobApplication();
 
@@ -48,7 +48,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobApplication> getAllJobApplications(String email){
-        User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
+        User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found. Unable to retreive"));
 
         List<JobApplication> list = jobRepo.findByUser(user);
         if(list==null){
@@ -56,6 +56,17 @@ public class JobServiceImpl implements JobService {
         }
         return list;
         
+    }
+
+    @Override
+    public void deleteApplication(String email, long id){
+        User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found. Unable to delete"));
+        JobApplication application = jobRepo.findByIdAndUser(id,user);
+        if(application==null){
+            throw new RuntimeException("Application for the user not found");
+        }
+        jobRepo.delete(application);
+
     }
 
 }
