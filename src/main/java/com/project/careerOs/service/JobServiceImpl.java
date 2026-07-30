@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
+import com.project.careerOs.dto.req.UpdateExpenseRequest;
 import com.project.careerOs.dto.res.JobApplicationResponse;
 import com.project.careerOs.model.JobApplication;
-import com.project.careerOs.model.Status;
 import com.project.careerOs.model.User;
 import com.project.careerOs.repository.JobRepo;
 import com.project.careerOs.repository.UserRepo;
@@ -67,6 +67,36 @@ public class JobServiceImpl implements JobService {
         }
         jobRepo.delete(application);
 
+    }
+
+    @Override
+    public JobApplication updateApplication(long id, String email, UpdateExpenseRequest request){
+        User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found. Unable to update"));
+        JobApplication application = jobRepo.findByIdAndUser(id, user);
+        if(application==null){
+            throw new RuntimeException("Application for the user not found");
+        }
+        if(request.getCompanyName()!=null){
+            application.setCompanyName(request.getCompanyName());
+        }
+        if(request.getJobRole()!=null){
+            application.setJobRole(request.getJobRole());
+        }
+        if(request.getSalary()!=0.0){
+            application.setSalary(request.getSalary());
+        }
+        if(request.getStatus()!=null){
+            application.setStatus(request.getStatus());
+        }
+        if(request.getAppliedDate()!=null){
+            application.setAppliedDate(request.getAppliedDate());
+        }
+        if(request.getNotes()!=null){
+            application.setNotes(request.getNotes());
+        }
+
+        JobApplication updatedApplication = jobRepo.save(application);
+        return updatedApplication;
     }
 
 }

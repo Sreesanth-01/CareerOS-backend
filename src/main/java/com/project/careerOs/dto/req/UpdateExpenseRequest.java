@@ -1,7 +1,8 @@
 package com.project.careerOs.dto.req;
 
-import java.io.ObjectInputFilter.Status;
 import java.time.LocalDate;
+
+import com.project.careerOs.model.Status;
 
 import lombok.Getter;
 import lombok.Setter;
