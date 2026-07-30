@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
+import com.project.careerOs.dto.req.UpdateExpenseRequest;
 import com.project.careerOs.dto.res.JobApplicationResponse;
 import com.project.careerOs.model.JobApplication;
 import com.project.careerOs.service.JobServiceImpl;
@@ -52,8 +54,19 @@ public class JobController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteApplicationByid(@PathVariable long id, @AuthenticationPrincipal String email){|
         try{
-            jobService.deleteApplication(id,email);
+            jobService.deleteApplication(email,id);
             return new ResponseEntity<>("Deleted successfully",HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateApplication(@PathVariable long id, @AuthenticationPrincipal String email, UpdateExpenseRequest request){
+        try{
+            JobApplication updatedApplication = jobService.updateApplication(id,email,request);
+            return new ResponseEntity<>(updatedApplication,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
