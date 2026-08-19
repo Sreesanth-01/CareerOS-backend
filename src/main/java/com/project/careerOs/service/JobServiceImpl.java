@@ -59,6 +59,18 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public JobApplication getJobApplicationById(long id, String email){
+            User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found. Unable to retreive"));
+
+            JobApplication job = jobRepo.findByIdAndUser(id, user);
+            if(job==null){
+                throw new RuntimeException("Not found");
+            }
+            return job;
+
+    }
+
+    @Override
     public void deleteApplication(String email, long id){
         User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found. Unable to delete"));
         JobApplication application = jobRepo.findByIdAndUser(id,user);

@@ -54,7 +54,7 @@ public class JobController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getJobApplicationById(@PathVariable long id, @AuthenticationPrincipal String email){
         try {
-            JobApplicationResponse job = jobService.getJobApplicationById(id,email);
+            JobApplication job = jobService.getJobApplicationById(id,email);
             return new ResponseEntity<>(job,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
