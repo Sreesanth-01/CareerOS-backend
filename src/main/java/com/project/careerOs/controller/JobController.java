@@ -51,8 +51,18 @@ public class JobController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getJobApplicationById(@PathVariable long id, @AuthenticationPrincipal String email){
+        try {
+            JobApplicationResponse job = jobService.getJobApplicationById(id,email);
+            return new ResponseEntity<>(job,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteApplicationByid(@PathVariable long id, @AuthenticationPrincipal String email){|
+    public ResponseEntity<Object> deleteApplicationByid(@PathVariable long id, @AuthenticationPrincipal String email){
         try{
             jobService.deleteApplication(email,id);
             return new ResponseEntity<>("Deleted successfully",HttpStatus.OK);
