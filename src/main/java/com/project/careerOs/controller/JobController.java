@@ -73,7 +73,7 @@ public class JobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateApplication(@PathVariable long id, @AuthenticationPrincipal String email, UpdateExpenseRequest request){
+    public ResponseEntity<Object> updateApplication(@PathVariable long id, @AuthenticationPrincipal String email,@RequestBody UpdateExpenseRequest request){
         try{
             JobApplication updatedApplication = jobService.updateApplication(id,email,request);
             return new ResponseEntity<>(updatedApplication,HttpStatus.OK);

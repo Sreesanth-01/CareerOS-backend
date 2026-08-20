@@ -94,7 +94,7 @@ public class JobServiceImpl implements JobService {
         if(request.getJobRole()!=null){
             application.setJobRole(request.getJobRole());
         }
-        if(request.getSalary()!=0.0){
+        if(request.getSalary()!=null){
             application.setSalary(request.getSalary());
         }
         if(request.getStatus()!=null){
@@ -106,7 +106,7 @@ public class JobServiceImpl implements JobService {
         if(request.getNotes()!=null){
             application.setNotes(request.getNotes());
         }
-
+        System.out.println("PARSED REQUEST: " + request.getCompanyName() + ", " + request.getSalary());
         JobApplication updatedApplication = jobRepo.save(application);
         return updatedApplication;
     }

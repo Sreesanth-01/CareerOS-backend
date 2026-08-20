@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UpdateExpenseRequest {
     public String companyName;
     public String jobRole;
-    public long salary;
+    public Long salary;
     public Status status;
     public LocalDate appliedDate;
     public String notes;

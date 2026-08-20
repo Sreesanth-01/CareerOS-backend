@@ -28,7 +28,7 @@ public class JobApplication {
 
     private String companyName;
     private String jobRole;
-    private long salary;
+    private Long salary;
     @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate appliedDate;
