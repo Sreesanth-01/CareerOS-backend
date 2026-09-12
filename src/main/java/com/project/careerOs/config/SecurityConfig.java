@@ -31,7 +31,6 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form.disable())
-        .httpBasic(Customizer.withDefaults())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -44,7 +43,6 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedHeaders(List.of("*")); //Change it before production
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
-        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
