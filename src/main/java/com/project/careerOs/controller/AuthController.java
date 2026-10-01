@@ -44,7 +44,7 @@ public class AuthController {
 
             Map<String,String> response = new HashMap<>();
             response.put("token",loginResponse.getToken());
-            response.put("message",loginResponse.getMessage());
+            response.put("userName",loginResponse.getUserName());
             return ResponseEntity.ok(response);
         }
         catch(Exception e){

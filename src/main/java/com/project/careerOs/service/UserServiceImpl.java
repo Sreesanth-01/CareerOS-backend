@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
             System.out.println("Token: "+token);
             return LoginResponse.builder()
             .token(token)
-            .userName(user.getUsername())
+            .userName(user.getUserName())
             .message("Logged in successfully")
             .build();
         }
