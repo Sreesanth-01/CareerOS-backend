@@ -32,8 +32,10 @@ public class JobServiceImpl implements JobService {
         jobApplication.setCompanyName(jobApplicationRequest.getCompanyName());
         jobApplication.setJobRole(jobApplicationRequest.getJobRole());
         jobApplication.setSalary(jobApplicationRequest.getSalary());
+        jobApplication.setLocation(jobApplicationRequest.getLocation());
         jobApplication.setStatus(jobApplicationRequest.getStatus());
         jobApplication.setAppliedDate(jobApplicationRequest.getAppliedDate());
+        jobApplication.setWorkMode(jobApplicationRequest.getWorkMode());
         jobApplication.setNotes(jobApplicationRequest.getNotes());
 
         jobApplication.setUser(user);
@@ -97,16 +99,22 @@ public class JobServiceImpl implements JobService {
         if(request.getSalary()!=null){
             application.setSalary(request.getSalary());
         }
+        if(request.getLocation()!=null){
+            application.setLocation(request.getLocation());
+        }
         if(request.getStatus()!=null){
             application.setStatus(request.getStatus());
         }
         if(request.getAppliedDate()!=null){
             application.setAppliedDate(request.getAppliedDate());
         }
+        if(request.getWorkMode()!=null){
+            application.setWorkMode(request.getWorkMode());
+        }
         if(request.getNotes()!=null){
             application.setNotes(request.getNotes());
         }
-        System.out.println("PARSED REQUEST: " + request.getCompanyName() + ", " + request.getSalary());
+        // System.out.println("PARSED REQUEST: " + request.getCompanyName() + ", " + request.getSalary());
         JobApplication updatedApplication = jobRepo.save(application);
         return updatedApplication;
     }

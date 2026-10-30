@@ -13,8 +13,10 @@ public class UpdateExpenseRequest {
     public String companyName;
     public String jobRole;
     public Long salary;
+    public String location;
     public Status status;
     public LocalDate appliedDate;
+    public String workMode;
     public String notes;
 
 }

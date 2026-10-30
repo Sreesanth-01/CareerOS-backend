@@ -29,9 +29,11 @@ public class JobApplication {
     private String companyName;
     private String jobRole;
     private Long salary;
+    private String location;
     @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate appliedDate;
+    private String workMode;
     private String notes;
 
     @ManyToOne(fetch = FetchType.LAZY)
