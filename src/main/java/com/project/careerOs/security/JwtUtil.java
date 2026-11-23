@@ -1,26 +1,35 @@
 package com.project.careerOs.security;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 
 @Component
 public class JwtUtil {
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final SecretKey key;
 
     private final long expiration_time =  3600000*24;
+
+    public JwtUtil(@Value("${app.jwt.secret}") String secret){
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
     
     private String buildToken(String email){
         return Jwts.builder()
-                    .setSubject(email)
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis()+expiration_time))
+                    .subject(email)
+                    .issuedAt(new Date())
+                    .expiration(new Date(System.currentTimeMillis()+expiration_time))
                     .signWith(key)
                     .compact();
     }
@@ -31,19 +40,19 @@ public class JwtUtil {
 
     public String extractEmail(String token){
         return Jwts.parser()
-                    .setSigningKey(key)
+                    .verifyWith(key)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody()
+                    .parseSignedClaims(token)
+                    .getPayload()
                     .getSubject();
     }
 
     public boolean validateToken(String token){
         try{
             Jwts.parser()
-                .setSigningKey(key)
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token);
+                .parseSignedClaims(token);
             
             return true;
         }

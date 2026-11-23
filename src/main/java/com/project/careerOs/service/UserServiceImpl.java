@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
         if(passwordMatches){
             String token = jwtUtil.generateToken(user);
-            System.out.println("Token: "+token);
+           
             return LoginResponse.builder()
             .token(token)
             .userName(user.getUserName())
