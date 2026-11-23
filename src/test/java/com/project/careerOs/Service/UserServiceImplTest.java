@@ -129,7 +129,7 @@ public class UserServiceImplTest {
     }
 
     @Test 
-    void login_shouldThrowEceptionWhenUserNotFound(){
+    void login_shouldThrowExceptionWhenUserNotFound(){
         LoginRequest request = new LoginRequest();
         request.setEmail("unknown@gmail.com");
         request.setPassword("test1@123");

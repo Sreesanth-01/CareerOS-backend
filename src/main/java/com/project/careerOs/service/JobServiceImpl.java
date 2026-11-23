@@ -24,7 +24,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobApplicationResponse addJobApplication(JobApplicationRequest jobApplicationRequest, String email){
-        System.out.println("Email: "+email);
+        // System.out.println("Email: "+email);
         User user = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found. Unable to add"));
 
         JobApplication jobApplication = new JobApplication();
