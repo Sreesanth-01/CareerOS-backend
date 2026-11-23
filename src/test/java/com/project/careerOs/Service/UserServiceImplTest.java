@@ -3,6 +3,7 @@ package com.project.careerOs.Service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -105,5 +106,42 @@ public class UserServiceImplTest {
         assertEquals("mockToken", response.getToken());
 
         verify(jwtUtil).generateToken(user);
+    }
+
+    @Test 
+    void login_shouldThrowExceptionWhenPasswordIsWrong(){
+        LoginRequest request = new LoginRequest();
+        request.setEmail("test1@gmail.com");
+        request.setPassword("wrongPassword");
+
+        User user = new User();
+        user.setEmail("test1@gmail.com");
+        user.setPassword("encodedPassword");
+
+        when(userRepo.findByEmail("test1@gmail.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.login(request));
+        assertEquals("Password mismatch", exception.getMessage());
+
+        verify(jwtUtil,never()).generateToken(user);
+
+    }
+
+    @Test 
+    void login_shouldThrowEceptionWhenUserNotFound(){
+        LoginRequest request = new LoginRequest();
+        request.setEmail("unknown@gmail.com");
+        request.setPassword("test1@123");
+
+        when(userRepo.findByEmail("unknown@gmail.com")).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,() -> userService.login(request));
+
+        assertEquals("User not found", exception.getMessage());
+
+        verify(passwordEncoder,never()).matches(anyString(),anyString());
+        verify(jwtUtil,never()).generateToken(any(User.class));
+
     }
 }
