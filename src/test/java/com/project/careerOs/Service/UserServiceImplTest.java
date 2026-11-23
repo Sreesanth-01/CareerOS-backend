@@ -1,7 +1,9 @@
 package com.project.careerOs.Service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,4 +65,18 @@ public class UserServiceImplTest {
         verify(passwordEncoder).encode("test1@123");
         verify(userRepo).save(any(User.class));
     }
+
+    @Test 
+    void register_shouldThrowExceptionWhenEmailAlreadyExists(){
+        SignUpRequest request = new SignUpRequest();
+        request.setEmail("existing@gmail.com");
+        request.setPassword("password123");
+
+        when(userRepo.existsByEmail("existing@gmail.com")).thenReturn(true);
+
+        assertThrows(RuntimeException.class, () -> userService.register(request));
+
+        verify(userRepo,never()).save(any(User.class));
+    }
+
 }
