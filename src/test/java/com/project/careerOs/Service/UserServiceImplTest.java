@@ -7,13 +7,17 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.project.careerOs.dto.req.LoginRequest;
 import com.project.careerOs.dto.req.SignUpRequest;
+import com.project.careerOs.dto.res.LoginResponse;
 import com.project.careerOs.dto.res.SignUpResponse;
 import com.project.careerOs.model.User;
 import com.project.careerOs.repository.UserRepo;
@@ -79,4 +83,27 @@ public class UserServiceImplTest {
         verify(userRepo,never()).save(any(User.class));
     }
 
+    @Test 
+    void login_shouldReturnTokenWhenLoginSuccessful(){
+        LoginRequest request = new LoginRequest();
+        request.setEmail("test1@gmail.com");
+        request.setPassword("test1@123");
+
+        User user = new User();
+        user.setEmail("test1@gmail.com");
+        user.setPassword("encodedPassword");
+
+        when(userRepo.findByEmail("test1@gmail.com")).thenReturn(Optional.of(user));
+
+        when(passwordEncoder.matches("test1@123", "encodedPassword")).thenReturn(true);
+
+        when(jwtUtil.generateToken(user)).thenReturn("mockToken");
+
+        LoginResponse response = userService.login(request);
+
+        assertEquals("Logged in successfully", response.getMessage());
+        assertEquals("mockToken", response.getToken());
+
+        verify(jwtUtil).generateToken(user);
+    }
 }
