@@ -16,21 +16,5 @@ CareerOS is a full-stack application designed to help students, freshers, and pr
 * 🚀 Professionals looking to track and improve their career journey
 
 
-##  Phase 1 - MVP
+Frontend Repo : https://github.com/Sreesanth-01/CareerOS-frontend
 
-### Features
-
-* 🔐 User Registration
-* 🔑 User Login
-* 💼 Job Application Tracker
-
----
-
-
-
-
-## 📈 Project Status
-
-🚧 Currently in development
-
-Phase 1: MVP in progress
