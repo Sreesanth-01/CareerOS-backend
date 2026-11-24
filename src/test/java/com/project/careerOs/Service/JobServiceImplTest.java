@@ -155,7 +155,7 @@ public class JobServiceImplTest {
     }
 
     @Test 
-    void getJobById_shoudlThrowWhenNotFound(){
+    void getJobById_shouldThrowWhenNotFound(){
         String email = "test2@gmail.com";
 
         User user = new User();
@@ -167,5 +167,54 @@ public class JobServiceImplTest {
         RuntimeException exception = assertThrows(RuntimeException.class, ()->jobService.getJobApplicationById(0, email));
 
         assertEquals("Not found", exception.getMessage());
+    }
+
+    @Test 
+    void deleteJob_shouldDeleteSuccessfully(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+
+        JobApplication job = new JobApplication();
+
+        when(jobRepo.findByIdAndUser(1l, user)).thenReturn(job);
+
+        jobService.deleteApplication(email, 1l);
+
+        verify(jobRepo).delete(job);
+    }
+
+    @Test
+    void deleteJob_shouldThrowWhenUserNotFound(){
+        String email = "temp2@gmail.com";
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,() -> jobService.deleteApplication(email, 1l));
+
+        verify(jobRepo,never()).delete(any(JobApplication.class));
+
+    }
+
+    @Test 
+    void deleteJob_shouldThrowWhenApplicationNotFound(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+
+        when(jobRepo.findByIdAndUser(1l, user)).thenReturn(null);
+
+        assertThrows(RuntimeException.class, ()->jobService.deleteApplication(email, 1l));
+
+        verify(jobRepo,never()).delete(any(JobApplication.class));
+
+
+
     }
 }
