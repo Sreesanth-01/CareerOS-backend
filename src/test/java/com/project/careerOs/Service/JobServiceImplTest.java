@@ -2,14 +2,11 @@ package com.project.careerOs.Service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.lang.classfile.ClassFile.Option;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.project.careerOs.dto.req.JobApplicationRequest;
+import com.project.careerOs.dto.req.UpdateExpenseRequest;
 import com.project.careerOs.dto.res.JobApplicationResponse;
 import com.project.careerOs.model.JobApplication;
 import com.project.careerOs.model.User;
@@ -217,4 +215,33 @@ public class JobServiceImplTest {
 
 
     }
+
+    @Test 
+    void updateJob_shouldUpdateOnlyProvidedFields(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+
+        JobApplication job = new JobApplication();
+        job.setCompanyName("Google");
+        job.setJobRole("SDE");
+
+        UpdateExpenseRequest request = new UpdateExpenseRequest();
+        request.setCompanyName("Amazon");
+
+        when(jobRepo.findByIdAndUser(1l, user)).thenReturn(job);
+        when(jobRepo.save(job)).thenReturn(job);
+
+        JobApplication result = jobService.updateApplication(1l, email, request);
+
+        assertEquals("Amazon", result.getCompanyName());
+        assertEquals("SDE", result.getJobRole());
+
+        verify(jobRepo).save(job);
+    }
+
+
 }
