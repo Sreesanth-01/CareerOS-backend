@@ -53,7 +53,7 @@ public class JobServiceImpl implements JobService {
         User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found. Unable to retreive"));
 
         List<JobApplication> list = jobRepo.findByUser(user);
-        if(list==null){
+        if(list.isEmpty()){
             throw new RuntimeException("No content");
         }
         return list;

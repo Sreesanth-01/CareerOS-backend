@@ -2,11 +2,15 @@ package com.project.careerOs.Service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.classfile.ClassFile.Option;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -76,5 +80,56 @@ public class JobServiceImplTest {
         assertEquals("User not found. Unable to add", exception.getMessage());
 
         verify(jobRepo,never()).save(any(JobApplication.class));
+    }
+
+    @Test 
+    void getAllJobs_shouldReturnNonEmptyList(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        JobApplication j1 = new JobApplication();
+        j1.setCompanyName("Google");
+        JobApplication j2 = new JobApplication();
+        j2.setCompanyName("Amazon");
+
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+        when(jobRepo.findByUser(any(User.class))).thenReturn(List.of(j1,j2));
+
+        List<JobApplication> list = jobService.getAllJobApplications(email);
+
+        assertEquals(2, list.size());
+        assertEquals("Google", list.get(0).getCompanyName());
+
+        verify(jobRepo).findByUser(user);
+    }
+
+    @Test 
+    void getAllJobs_shouldThrowExceptionWhenUserNotFound(){
+        String email = "test2@gmail.com";
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, ()->jobService.getAllJobApplications(email));
+
+        assertEquals("User not found. Unable to retreive", exception.getMessage());
+
+        verify(jobRepo,never()).findByUser(any(User.class));
+    }
+
+    @Test 
+    void getAllJobs_shouldThrowExceptionWhenListIsEmpty(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+        when(jobRepo.findByUser(user)).thenReturn(List.of());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, ()->jobService.getAllJobApplications(email));
+        assertEquals("No content", exception.getMessage());
     }
 }
