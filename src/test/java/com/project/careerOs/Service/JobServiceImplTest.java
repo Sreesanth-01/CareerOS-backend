@@ -131,5 +131,41 @@ public class JobServiceImplTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, ()->jobService.getAllJobApplications(email));
         assertEquals("No content", exception.getMessage());
+
+    }
+
+    @Test 
+    void getJobById_shouldReturnJobById(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        JobApplication  job = new JobApplication();
+        job.setCompanyName("Google");
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+        when(jobRepo.findByIdAndUser(1l, user)).thenReturn(job);
+
+        JobApplication fetchedJob = jobService.getJobApplicationById(1l, email);
+
+        assertEquals("Google", fetchedJob.getCompanyName());
+
+        verify(jobRepo).findByIdAndUser(1l, user);
+    }
+
+    @Test 
+    void getJobById_shoudlThrowWhenNotFound(){
+        String email = "test2@gmail.com";
+
+        User user = new User();
+        user.setEmail(email);
+
+        when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
+        when(jobRepo.findByIdAndUser(1l, user)).thenReturn(null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, ()->jobService.getJobApplicationById(0, email));
+
+        assertEquals("Not found", exception.getMessage());
     }
 }
