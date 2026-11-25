@@ -1,4 +1,4 @@
-package com.project.careerOs.Service;
+package com.project.careerOs.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
